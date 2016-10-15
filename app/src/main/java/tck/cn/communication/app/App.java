@@ -22,6 +22,11 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initHyphenate();
+
+    }
+
+    private void initHyphenate() {
         EMOptions options = new EMOptions();
 
         // 默认添加好友时，是不需要验证的，改成需要验证
