@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+     android:fillAfter="true">
+
+    <!--android:fillAfter="true"表示动画结束时，停留在动画的最后一帧即可-->
+    <alpha
+        android:duration="2000"
+        android:fromAlpha="1"
+        android:startOffset="2000"
+        android:toAlpha="0"/>
+</set>
