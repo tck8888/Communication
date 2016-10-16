@@ -65,4 +65,15 @@ dependencies {
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
     compile 'cn.bmob.android:http-legacy:1.0'
 
+    //各种分格的Toast
+    compile 'com.sdsmdg.tastytoast:tastytoast:0.1.0'
+
+    //各种风格的dialog
+    compile 'com.zhl.cbdialog:CBDialog:1.0.0'
+
+    //状态栏工具类（实现沉浸式状态栏/变色状态栏）
+    compile 'com.jaeger.statusbaruitl:library:1.2.7'
+
+    compile 'com.orhanobut:logger:1.15'
+
 }

@@ -11,6 +11,8 @@ import com.hyphenate.chat.EMOptions;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.bmob.v3.Bmob;
+
 /**
  * Description :
  * <p>
@@ -19,11 +21,20 @@ import java.util.List;
 
 public class App extends Application {
 
+    private static App INSTANCE;
+
+    public synchronized static App getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        INSTANCE = this;
         initHyphenate();
 
+        //默认初始化:后端云服务器
+        Bmob.initialize(this, "c529a9978542db5f09f932c4a7bc966a");
     }
 
     private void initHyphenate() {

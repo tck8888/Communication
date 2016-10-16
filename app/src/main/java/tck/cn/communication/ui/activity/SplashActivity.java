@@ -8,11 +8,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.jaeger.library.StatusBarUtil;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import tck.cn.communication.R;
-import tck.cn.communication.utils.AnimationListenerAdpater;
+import tck.cn.communication.utils.ListenerAdpater;
 
 
 /**
@@ -30,10 +32,15 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         mUnbinder = ButterKnife.bind(this);
 
+        /**
+         * 设置状态栏的透明度
+         */
+        StatusBarUtil.setTranslucent(this, 0);
+
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha_anim);
         animation.setDuration(2000);
         mSplash.startAnimation(animation);
-        animation.setAnimationListener(new AnimationListenerAdpater() {
+        animation.setAnimationListener(new ListenerAdpater() {
             @Override
             public void onAnimationEnd(Animation animation) {
                 super.onAnimationEnd(animation);

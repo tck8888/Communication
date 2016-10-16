@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import tck.cn.communication.R;
 
+/**
+ * 主界面
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

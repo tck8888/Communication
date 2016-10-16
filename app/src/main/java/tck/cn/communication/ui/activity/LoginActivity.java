@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import tck.cn.communication.R;
 import tck.cn.communication.base.BaseActivity;
+import tck.cn.communication.utils.SharedPreferencesUtil;
 
 public class LoginActivity extends BaseActivity {
 
@@ -38,8 +39,11 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        String username = mEdUsername.getText().toString().trim();
-        String password = mEdPassword.getText().toString().toString().toString();
+        /**
+         * 数据回显
+         */
+        mEdUsername.setText(SharedPreferencesUtil.getUsername(this));
+        mEdPassword.setText(SharedPreferencesUtil.getPassword(this));
     }
 
     @OnClick({R.id.login, R.id.tv_newuser})
