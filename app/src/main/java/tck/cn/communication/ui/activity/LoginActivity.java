@@ -2,6 +2,7 @@ package tck.cn.communication.ui.activity;
 
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.Button;
@@ -9,13 +10,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sdsmdg.tastytoast.TastyToast;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import tck.cn.communication.R;
 import tck.cn.communication.base.BaseActivity;
+import tck.cn.communication.present.LoginPresenter;
+import tck.cn.communication.present.contact.LoginContract;
 import tck.cn.communication.utils.SharedPreferencesUtil;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @BindView(R.id.ed_username)
     EditText mEdUsername;
@@ -31,6 +36,7 @@ public class LoginActivity extends BaseActivity {
     TextView mTvNewuser;
     @BindView(R.id.activity_login)
     LinearLayout mActivityLogin;
+    private LoginPresenter mLoginPresenter;
 
     @Override
     protected int getLayout() {
@@ -39,6 +45,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        mLoginPresenter = new LoginPresenter(this);
         /**
          * 数据回显
          */
@@ -50,11 +57,32 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login:
-                startActivity(new Intent(this, MainActivity.class));
+                login();
+                //startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.tv_newuser:
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
+        }
+    }
+
+    /**
+     * 登录事件的处理
+     */
+    public void login() {
+        String username = mEdUsername.getText().toString().trim();
+        String password = mEdPassword.getText().toString().trim();
+
+        mLoginPresenter.login(username, password);
+    }
+
+    @Override
+    public void loginSuccess(String username, String password, boolean isSuccess) {
+        if (isSuccess) {
+            TastyToast.makeText(this, username +"登录成功" + password, TastyToast.LENGTH_LONG, TastyToast.INFO);
+        } else {
+            TastyToast.makeText(this, "登录失败", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+
         }
     }
 }

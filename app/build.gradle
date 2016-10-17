@@ -76,4 +76,6 @@ dependencies {
 
     compile 'com.orhanobut:logger:1.15'
 
+    compile 'com.ashokvarma.android:bottom-navigation-bar:1.3.0'
+
 }
