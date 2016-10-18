@@ -1,5 +1,6 @@
 package tck.cn.communication.ui.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,9 +18,11 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import butterknife.BindView;
 import tck.cn.communication.R;
 import tck.cn.communication.base.BaseActivity;
+import tck.cn.communication.base.BaseFragment;
+import tck.cn.communication.utils.FragmentFactory;
 
 /**
- * 主界面
+ * 主界面的简单实现
  */
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener {
 
@@ -34,6 +37,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @BindView(R.id.bottom_bar)
     BottomNavigationBar mBottomBar;
 
+    int[] titleIds = {R.string.message, R.string.conatct, R.string.plugin};
+
     @Override
     protected int getLayout() {
         return R.layout.activity_main;
@@ -43,6 +48,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     protected void initData() {
         initToolbar();
         initBottombar();
+
+        initFirstFragment();
     }
 
     /**
@@ -51,6 +58,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private void initToolbar() {
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
+        mTvTitle.setText(titleIds[0]);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -58,16 +66,34 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
      * 初始化底部导航栏
      */
     private void initBottombar() {
-        mBottomBar.setMode(BottomNavigationBar.MODE_FIXED);
+        mBottomBar.setActiveColor(R.color.btn_normal)
+                .setInActiveColor(R.color.inActive);
         mBottomBar.addItem(new BottomNavigationItem(R.mipmap.contact_selected_2, "消息"))
                 .addItem(new BottomNavigationItem(R.mipmap.conversation_selected_2, "联系人"))
                 .addItem(new BottomNavigationItem(R.mipmap.plugin_selected_2, "动态"))
                 .setFirstSelectedPosition(0)
                 .initialise();
-        mBottomBar
-                .setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC
-                );
+
         mBottomBar.setTabSelectedListener(this);
+    }
+
+    private void initFirstFragment() {
+        /**
+         * 如果这个Activity中已经有老（就是Activity保存的历史的状态，又恢复了）的Fragment，先全部移除
+         */
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        for (int i = 0; i < titleIds.length; i++) {
+            Fragment fragment = supportFragmentManager.findFragmentByTag(i + "");
+            if (fragment != null) {
+                fragmentTransaction.remove(fragment);
+            }
+        }
+        fragmentTransaction.commit();
+
+        getSupportFragmentManager().beginTransaction().add(R.id.content, FragmentFactory.getFragment(0), "0").commit();
+
+        mTvTitle.setText(titleIds[0]);
     }
 
     @Override
@@ -86,13 +112,12 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case 0:
+            case R.id.add_friend_menu:
+                //添加好友
+                startActivity(new Intent(this, AddFriendActivity.class));
                 break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
+            case R.id.scan_menu:
+                //TODO:
                 break;
             default:
                 break;
@@ -100,15 +125,28 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         return true;
     }
 
-
     @Override
     public void onTabSelected(int position) {
 
+        /**
+         * 先判断当前Fragment是否被添加到了MainActivity中
+         * 如果添加了则直接显示即可
+         * 如果没有添加则添加，然后显示
+         */
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        BaseFragment fragment = FragmentFactory.getFragment(position);
+        if (!fragment.isAdded()) {
+            transaction.add(R.id.content, fragment, "" + position);
+        }
+        transaction.show(fragment).commit();
+        mTvTitle.setText(titleIds[position]);
     }
 
     @Override
     public void onTabUnselected(int position) {
-
+        getSupportFragmentManager().beginTransaction()
+                .hide(FragmentFactory.getFragment(position))
+                .commit();
     }
 
     @Override

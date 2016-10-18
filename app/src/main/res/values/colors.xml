@@ -8,4 +8,5 @@
     <color name="btn_normal">#00ACFF</color>
 
     <color name="btn_text_color">#fff</color>
+    <color name="inActive">#ABADBB</color>
 </resources>

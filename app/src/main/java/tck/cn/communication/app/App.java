@@ -5,13 +5,18 @@ import android.app.Application;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.hyphenate.EMContactListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Iterator;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
+import tck.cn.communication.model.OnContactUpdate;
+import tck.cn.communication.utils.DBUtils;
 
 /**
  * Description :
@@ -35,6 +40,12 @@ public class App extends Application {
 
         //默认初始化:后端云服务器
         Bmob.initialize(this, "c529a9978542db5f09f932c4a7bc966a");
+
+        initDB();
+    }
+
+    public void initDB() {
+        DBUtils.initDB(this);
     }
 
     private void initHyphenate() {
@@ -58,6 +69,8 @@ public class App extends Application {
         EMClient.getInstance().init(this, options);
 //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
+
+        initEMCListener();
     }
 
     private String getAppName(int pID) {
@@ -78,5 +91,41 @@ public class App extends Application {
             }
         }
         return processName;
+    }
+
+
+    public void initEMCListener() {
+        EMClient.getInstance().contactManager().setContactListener(new EMContactListener() {
+            @Override
+            public void onContactAdded(String s) {
+                /**
+                 * 好友请求被tong意
+                 * 发出通知联系人界面更新ui
+                 */
+                EventBus.getDefault().post(new OnContactUpdate(s, true));
+            }
+
+            @Override
+            public void onContactDeleted(String s) {
+                //被删除时回调此方法
+                EventBus.getDefault().post(new OnContactUpdate(s, false));
+
+            }
+
+            @Override
+            public void onContactInvited(String s, String s1) {
+            //收到好友邀请
+            }
+
+            @Override
+            public void onContactAgreed(String s) {
+                //增加了联系人时回调此方法
+            }
+
+            @Override
+            public void onContactRefused(String s) {
+                //好友请求被拒绝
+            }
+        });
     }
 }

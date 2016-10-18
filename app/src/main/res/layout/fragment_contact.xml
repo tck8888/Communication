@@ -3,9 +3,11 @@
              android:layout_height="match_parent"
     >
 
-    <TextView
+    <tck.cn.communication.widget.ContactLayout
+        android:id="@+id/contactlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="联系人"/>
+        android:layout_height="match_parent">
+
+    </tck.cn.communication.widget.ContactLayout>
 
 </FrameLayout>

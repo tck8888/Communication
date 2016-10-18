@@ -1,5 +1,7 @@
 package tck.cn.communication.present;
 
+import android.util.Log;
+
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
@@ -25,6 +27,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
         this.mView = view;
         user = new User();
     }
+
     @Override
     public void register(final String username, final String password) {
 
@@ -64,6 +67,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                         }
                     });
                 } else {
+                    Log.d("======signUp=====", e + "");
                     //失败了，将结果告诉Activity
                     mView.registerSuccess(username, password, false);
                 }

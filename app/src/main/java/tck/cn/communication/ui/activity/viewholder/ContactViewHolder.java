@@ -2,6 +2,9 @@ package tck.cn.communication.ui.activity.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
+
+import tck.cn.communication.R;
 
 /**
  * Description :联系人界面的viewholder
@@ -10,7 +13,15 @@ import android.view.View;
  */
 
 public class ContactViewHolder extends RecyclerView.ViewHolder {
+
+    public TextView tvSection;
+    public TextView tvUsername;
+
+
     public ContactViewHolder(View itemView) {
         super(itemView);
+
+        tvSection = (TextView) itemView.findViewById(R.id.tv_section);
+        tvUsername = (TextView) itemView.findViewById(R.id.tv_username);
     }
 }

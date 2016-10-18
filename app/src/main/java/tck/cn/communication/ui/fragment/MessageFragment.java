@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import tck.cn.communication.R;
+import tck.cn.communication.base.BaseFragment;
 
 /**
  * Description : 消息界面
@@ -15,7 +16,7 @@ import tck.cn.communication.R;
  * Created by tck on 2016/10/17.
  */
 
-public class MessageFragment extends Fragment {
+public class MessageFragment extends BaseFragment {
 
     @Nullable
     @Override
