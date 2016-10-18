@@ -124,7 +124,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, T
     @Override
     public void loginSuccess(String username, String password, boolean isSuccess) {
         if (isSuccess) {
-            TastyToast.makeText(this, username + "登录成功", TastyToast.LENGTH_SHORT, TastyToast.INFO);
+           // TastyToast.makeText(this, username + "登录成功", TastyToast.LENGTH_SHORT, TastyToast.INFO);
             SharedPreferencesUtil.saveUser(this, username, password);
             startActivity(new Intent(this, MainActivity.class));
         } else {

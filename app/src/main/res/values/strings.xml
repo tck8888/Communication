@@ -12,4 +12,9 @@
     <string name="conatct">联系人</string>
     <string name="plugin">动态</string>
     <string name="exit">退出登录</string>
+
+    <string name="weather">天气查询</string>
+    <string name="phonenumberlocation">手机归属地查询</string>
+    <string name="news">网易新闻</string>
+    <string name="joke">笑话大全</string>
 </resources>

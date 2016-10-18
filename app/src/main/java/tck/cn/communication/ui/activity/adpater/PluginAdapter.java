@@ -5,29 +5,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import tck.cn.communication.R;
+import tck.cn.communication.model.ItemInfo;
 import tck.cn.communication.ui.activity.viewholder.FootViewHolder;
-import tck.cn.communication.ui.activity.viewholder.HeadViewHolder;
+
 import tck.cn.communication.ui.activity.viewholder.PluginItemViewholder;
 
 /**
- * Description :
+ * Description :动态界面的适配器
  * <p>
  * Created by tck on 2016/10/18.
  */
 
 public class PluginAdapter extends RecyclerView.Adapter {
 
-    private final static int HEAD = 1000;
     private final static int FOOT = 1001;
+
+    private List<ItemInfo> mItemInfo;
+
+    public PluginAdapter(List<ItemInfo> itemInfo) {
+        mItemInfo = itemInfo;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        if (viewType == HEAD) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_head, parent, false);
-            return new HeadViewHolder(view);
-        }
 
         if (viewType == FOOT) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_foot, parent, false);
@@ -40,31 +43,58 @@ public class PluginAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof HeadViewHolder) {
-            HeadViewHolder headViewHolder = (HeadViewHolder) holder;
-        } else if (holder instanceof FootViewHolder) {
-            FootViewHolder footViewHolder = (FootViewHolder) holder;
-        } else {
-            PluginItemViewholder pluginItemViewholder = (PluginItemViewholder) holder;
-        }
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
+        if (holder instanceof FootViewHolder) {
+            final FootViewHolder footViewHolder = (FootViewHolder) holder;
+
+
+            footViewHolder.exitLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(position);
+                    }
+                }
+            });
+        } else {
+
+            ItemInfo itemInfo = mItemInfo.get(position);
+            PluginItemViewholder pluginItemViewholder = (PluginItemViewholder) holder;
+            pluginItemViewholder.tvInfomation.setText(itemInfo.titleId);
+            pluginItemViewholder.imageView.setBackgroundResource(itemInfo.ImageId);
+            pluginItemViewholder.mJump.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(position);
+                    }
+                }
+            });
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return 15;
+        return mItemInfo.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return HEAD;
-        }
-        if (position == getItemCount()-1) {
+        if (position == getItemCount() - 1) {
             return FOOT;
         }
         return super.getItemViewType(position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int postion);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 }

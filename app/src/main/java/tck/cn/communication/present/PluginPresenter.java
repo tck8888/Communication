@@ -6,7 +6,7 @@ import tck.cn.communication.listener.LoginOutCallBackListener;
 import tck.cn.communication.present.contact.PluginContract;
 
 /**
- * Description :
+ * Description : 动态界面的----P层
  * <p>
  * Created by tck on 2016/10/17.
  */
@@ -20,6 +20,9 @@ public class PluginPresenter implements PluginContract.Presenter {
 
     @Override
     public void logout() {
+        /**
+         * 参数1：true代表解除绑定，不再推送消息
+         */
         EMClient.getInstance().logout(true, new LoginOutCallBackListener() {
             @Override
             public void onMainSuccess() {

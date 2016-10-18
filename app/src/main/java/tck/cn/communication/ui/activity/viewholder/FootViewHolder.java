@@ -12,7 +12,7 @@ import tck.cn.communication.R;
  * Created by tck on 2016/10/18.
  */
 
-public class FootViewHolder extends RecyclerView.ViewHolder {
+public class FootViewHolder extends RecyclerView.ViewHolder{
     public Button exitLogin;
 
 
@@ -20,4 +20,5 @@ public class FootViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         exitLogin = (Button) itemView.findViewById(R.id.exit_login);
     }
+
 }
