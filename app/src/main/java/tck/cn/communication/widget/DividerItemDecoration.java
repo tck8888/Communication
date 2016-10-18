@@ -1,9 +1,4 @@
-package tck.cn.communication.widget;/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * limitations under the License.
- */
+package tck.cn.communication.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -16,9 +11,7 @@ import android.view.View;
 
 
 /**
- * This class is from the v7 samples of the Android SDK. It's not by me!
- * <p/>
- * See the license above for details.
+ * 设置RecyclerView的条目分割线
  */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -49,7 +42,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent) {
+    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
 
         if (mOrientation == VERTICAL_LIST) {
             drawVertical(c, parent);
@@ -94,7 +87,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (mOrientation == VERTICAL_LIST) {
             outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
         } else {

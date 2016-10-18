@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import java.util.List;
 
@@ -60,6 +61,15 @@ public class ContactAdpater extends RecyclerView.Adapter<ContactViewHolder> impl
                 return true;
             }
         });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemShortClickListener != null) {
+                    mOnItemShortClickListener.onItemShortClick(contact, position);
+                }
+            }
+        });
     }
 
     @Override
@@ -71,6 +81,7 @@ public class ContactAdpater extends RecyclerView.Adapter<ContactViewHolder> impl
         return mContacts;
     }
 
+
     private OnItemLongClickListener mOnItemLongClickListener;
 
     public interface OnItemLongClickListener {
@@ -79,6 +90,16 @@ public class ContactAdpater extends RecyclerView.Adapter<ContactViewHolder> impl
 
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
         this.mOnItemLongClickListener = onItemLongClickListener;
+    }
+
+    private OnItemShortClickListener mOnItemShortClickListener;
+
+    public void setOnItemShortClickListener(OnItemShortClickListener onItemShortClickListener) {
+        this.mOnItemShortClickListener = onItemShortClickListener;
+    }
+
+    public interface OnItemShortClickListener {
+        void onItemShortClick(String contact, int position);
     }
 
 }

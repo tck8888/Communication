@@ -124,7 +124,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, T
     @Override
     public void loginSuccess(String username, String password, boolean isSuccess) {
         if (isSuccess) {
-            TastyToast.makeText(this, username + "登录成功" + password, TastyToast.LENGTH_LONG, TastyToast.INFO);
+            TastyToast.makeText(this, username + "登录成功", TastyToast.LENGTH_SHORT, TastyToast.INFO);
             SharedPreferencesUtil.saveUser(this, username, password);
             startActivity(new Intent(this, MainActivity.class));
         } else {
@@ -166,7 +166,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, T
                 //被授权了
                 login();
             } else {
-                TastyToast.makeText(this, "没有给予该应用权限，不让你用了", TastyToast.LENGTH_LONG, TastyToast.ERROR);
+                TastyToast.makeText(this, "没有给予该应用权限，不让你用了", TastyToast.LENGTH_SHORT, TastyToast.ERROR);
 
             }
         }

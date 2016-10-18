@@ -3,6 +3,7 @@ package tck.cn.communication.base;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -89,5 +90,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mBind.unbind();
+    }
+
+    public void startActivity(Class clazz, boolean isFinish, String contact) {
+        Intent intent = new Intent(this,clazz);
+        if (contact!=null){
+            intent.putExtra("username",contact);
+        }
+        startActivity(intent);
+        if (isFinish){
+            finish();
+        }
     }
 }

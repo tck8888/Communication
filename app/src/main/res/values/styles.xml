@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!--设置RecyclerView分割线的样式-->
+        <item name="android:listDivider">@drawable/divider_bg</item>
     </style>
 
 

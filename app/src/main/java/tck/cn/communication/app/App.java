@@ -8,6 +8,7 @@ import android.util.Log;
 import com.hyphenate.EMContactListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.hyphenate.exceptions.HyphenateException;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -115,6 +116,11 @@ public class App extends Application {
             @Override
             public void onContactInvited(String s, String s1) {
             //收到好友邀请
+                try {
+                    EMClient.getInstance().contactManager().acceptInvitation(s);
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

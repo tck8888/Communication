@@ -1,5 +1,8 @@
 package tck.cn.communication.ui.fragment;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -8,8 +11,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.sdsmdg.tastytoast.TastyToast;
+import com.zhl.cbdialog.CBDialogBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,6 +27,8 @@ import tck.cn.communication.base.BaseFragment;
 import tck.cn.communication.model.OnContactUpdate;
 import tck.cn.communication.present.ContactPresenter;
 import tck.cn.communication.present.contact.ContactContract;
+import tck.cn.communication.ui.activity.ChatActivity;
+import tck.cn.communication.ui.activity.MainActivity;
 import tck.cn.communication.ui.activity.adpater.ContactAdpater;
 import tck.cn.communication.widget.ContactLayout;
 
@@ -31,7 +38,7 @@ import tck.cn.communication.widget.ContactLayout;
  * Created by tck on 2016/10/17.
  */
 
-public class ContractFragment extends BaseFragment implements ContactContract.ContactView, SwipeRefreshLayout.OnRefreshListener, ContactAdpater.OnItemLongClickListener {
+public class ContractFragment extends BaseFragment implements ContactContract.ContactView, SwipeRefreshLayout.OnRefreshListener, ContactAdpater.OnItemLongClickListener, ContactAdpater.OnItemShortClickListener {
 
     private ContactLayout mContactLayout;
     private ContactPresenter mContactPresenter;
@@ -65,6 +72,7 @@ public class ContractFragment extends BaseFragment implements ContactContract.Co
         mContactAdpater = new ContactAdpater(contacts);
         mContactLayout.setAdapter(mContactAdpater);
         mContactAdpater.setOnItemLongClickListener(this);
+        mContactAdpater.setOnItemShortClickListener(this);
     }
 
     @Override
@@ -100,14 +108,50 @@ public class ContractFragment extends BaseFragment implements ContactContract.Co
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * 长按事件的处理----删除好友功能
+     *
+     * @param contact
+     * @param position
+     */
     @Override
     public void onItemLongClick(final String contact, int position) {
-        Snackbar.make(mContactLayout, "您和" + contact + "确定友尽了吗？", Snackbar.LENGTH_LONG)
-                .setAction("确定", new View.OnClickListener() {
+
+        new CBDialogBuilder(getContext(), CBDialogBuilder.DIALOG_STYLE_NORMAL)
+                .setTouchOutSideCancelable(true)
+                .showCancelButton(true)
+                .setTitle("断绝关系")
+                .setMessage("您和" + contact + "确定友尽了吗？")
+                .setConfirmButtonText("恩断义绝")
+                .setCancelButtonText("容我想想")
+                .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                .setDialoglocation(CBDialogBuilder.DIALOG_LOCATION_CENTER)
+                .setButtonClickListener(true, new CBDialogBuilder.onDialogbtnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        mContactPresenter.deleteContact(contact);
+                    public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                        switch (whichBtn) {
+                            case BUTTON_CONFIRM:
+                                mContactPresenter.deleteContact(contact);
+                                break;
+                            case BUTTON_CANCEL:
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                }).show();
+                })
+                .create().show();
+    }
+
+    /**
+     * 点击事件的处理----进入聊天界面
+     *
+     * @param contact
+     * @param position
+     */
+    @Override
+    public void onItemShortClick(String contact, int position) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.startActivity(ChatActivity.class,false,contact);
     }
 }
