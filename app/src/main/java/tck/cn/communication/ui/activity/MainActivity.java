@@ -6,14 +6,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.jaeger.library.StatusBarUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import tck.cn.communication.R;
@@ -35,9 +44,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.bottom_bar)
-    BottomNavigationBar mBottomBar;
+    BottomNavigationBar mBottomNavigationBar;
 
     int[] titleIds = {R.string.message, R.string.conatct, R.string.plugin};
+    private BadgeItem mBadgeItem;
 
     @Override
     protected int getLayout() {
@@ -48,8 +58,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     protected void initData() {
         initToolbar();
         initBottombar();
-
         initFirstFragment();
+        EventBus.getDefault().register(this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EMMessage message) {
+        updateUnreadCount();
     }
 
     /**
@@ -59,22 +75,37 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         mTvTitle.setText(titleIds[0]);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**
      * 初始化底部导航栏
      */
     private void initBottombar() {
-        mBottomBar.setActiveColor(R.color.btn_normal)
-                .setInActiveColor(R.color.inActive);
-        mBottomBar.addItem(new BottomNavigationItem(R.mipmap.contact_selected_2, "消息"))
-                .addItem(new BottomNavigationItem(R.mipmap.conversation_selected_2, "联系人"))
-                .addItem(new BottomNavigationItem(R.mipmap.plugin_selected_2, "动态"))
-                .setFirstSelectedPosition(0)
-                .initialise();
 
-        mBottomBar.setTabSelectedListener(this);
+        BottomNavigationItem conversationItem = new BottomNavigationItem(R.mipmap.conversation_selected_2, "消息");
+        mBadgeItem = new BadgeItem();
+        mBadgeItem.setGravity(Gravity.RIGHT);
+        mBadgeItem.setTextColor("#ffffff");
+        mBadgeItem.setBackgroundColor("#ff0000");
+        mBadgeItem.setText("5");
+        mBadgeItem.show();
+
+        conversationItem.setBadgeItem(mBadgeItem);
+        mBottomNavigationBar.addItem(conversationItem);
+
+        BottomNavigationItem contactItem = new BottomNavigationItem(R.mipmap.contact_selected_2, "联系人");
+
+        mBottomNavigationBar.addItem(contactItem);
+
+        BottomNavigationItem pluginItem = new BottomNavigationItem(R.mipmap.plugin_selected_2, "动态");
+        mBottomNavigationBar.addItem(pluginItem);
+
+        mBottomNavigationBar.setActiveColor(R.color.btn_normal);
+        mBottomNavigationBar.setInActiveColor(R.color.inActive);
+
+        mBottomNavigationBar.initialise();
+
+        mBottomNavigationBar.setTabSelectedListener(this);
     }
 
     private void initFirstFragment() {
@@ -150,7 +181,34 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        updateUnreadCount();
+
+    }
+
+    @Override
     public void onTabReselected(int position) {
 
+    }
+
+    public void updateUnreadCount() {
+        //获取所有的未读消息
+        int unreadMsgsCount = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+        if (unreadMsgsCount > 99) {
+            mBadgeItem.setText("99+");
+            mBadgeItem.show(true);
+        } else if (unreadMsgsCount > 0) {
+            mBadgeItem.setText(unreadMsgsCount + "");
+            mBadgeItem.show(true);
+        } else {
+            mBadgeItem.hide(true);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

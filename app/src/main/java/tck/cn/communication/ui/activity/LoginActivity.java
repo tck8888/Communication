@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.regex.Pattern;
@@ -58,6 +59,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, T
 
     @Override
     protected void initData() {
+        //StatusBarUtil.setTranslucent(this, 0);
         mLoginPresenter = new LoginPresenter(this);
         /**
          * 数据回显
@@ -124,7 +126,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, T
     @Override
     public void loginSuccess(String username, String password, boolean isSuccess) {
         if (isSuccess) {
-           // TastyToast.makeText(this, username + "登录成功", TastyToast.LENGTH_SHORT, TastyToast.INFO);
+            // TastyToast.makeText(this, username + "登录成功", TastyToast.LENGTH_SHORT, TastyToast.INFO);
             SharedPreferencesUtil.saveUser(this, username, password);
             startActivity(new Intent(this, MainActivity.class));
         } else {

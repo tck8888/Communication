@@ -2,7 +2,6 @@ package tck.cn.communication.ui.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.media.DrmInitData;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +37,7 @@ public class PluginFragment extends BaseFragment implements PluginContract.Plugi
     private RecyclerView mRecyclerView;
     private PluginPresenter mPluginPresenter;
 
-    private static int[] ICONID = {R.mipmap.weather, R.mipmap.news, R.mipmap.avatar1, R.mipmap.avatar3};
+    private static int[] ICONID = {R.mipmap.weather, R.mipmap.avatar3, R.mipmap.joke, R.mipmap.news};
     private static int[] TITLE = {R.string.weather, R.string.phonenumberlocation, R.string.joke, R.string.news};
     private List<ItemInfo> mItemInfoData;
 

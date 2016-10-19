@@ -9,4 +9,5 @@
 
     <color name="btn_text_color">#fff</color>
     <color name="inActive">#ABADBB</color>
+    <color name="status">#00ACFF</color>
 </resources>

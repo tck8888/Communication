@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="80dp"
+    android:foreground="?android:attr/selectableItemBackground"
     >
 
     <RelativeLayout
@@ -22,11 +23,11 @@
             android:id="@+id/tv_infomation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-           android:layout_toRightOf="@+id/imageview"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/imageview"
             android:text="天气预报"
-            android:textSize="28sp"
+            android:textSize="20sp"
             />
 
         <ImageView
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
-           android:background="@drawable/jump_selector"/>
+            android:background="@drawable/jump_selector"
+            android:scaleType="centerCrop"/>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

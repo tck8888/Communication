@@ -57,17 +57,15 @@
             </intent-filter>
         </receiver>
 
-        <!--
-          <activity android:name=".ui.activity.MainActivity">
-          </activity>
-        -->
-        <activity android:name=".ui.activity.MainActivity">
+        <activity android:name=".ui.activity.MainActivity" android:launchMode="singleTask">
         </activity>
         <activity android:name=".ui.activity.RegisterActivity">
         </activity>
         <activity android:name=".ui.activity.AddFriendActivity">
         </activity>
         <activity android:name=".ui.activity.ChatActivity">
+        </activity>
+        <activity android:name=".ui.activity.WheatherActivity">
         </activity>
     </application>
 

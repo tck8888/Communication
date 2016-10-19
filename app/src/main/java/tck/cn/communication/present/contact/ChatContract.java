@@ -14,10 +14,15 @@ public interface ChatContract {
 
     public interface ChatView {
         void onInit(List<EMMessage> emMessageList);
+
+        void onUpdate(int size);
     }
 
     public interface Presenter {
 
         void initChat(String contact);
+        void updateData(String username);
+
+        void sendMessage(String username, String msg);
     }
 }

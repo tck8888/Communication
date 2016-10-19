@@ -48,7 +48,7 @@ public class PluginAdapter extends RecyclerView.Adapter {
         if (holder instanceof FootViewHolder) {
             final FootViewHolder footViewHolder = (FootViewHolder) holder;
 
-
+/*
             footViewHolder.exitLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -56,22 +56,30 @@ public class PluginAdapter extends RecyclerView.Adapter {
                         mOnItemClickListener.onItemClick(position);
                     }
                 }
-            });
+            });*/
         } else {
 
             ItemInfo itemInfo = mItemInfo.get(position);
             PluginItemViewholder pluginItemViewholder = (PluginItemViewholder) holder;
             pluginItemViewholder.tvInfomation.setText(itemInfo.titleId);
             pluginItemViewholder.imageView.setBackgroundResource(itemInfo.ImageId);
-            pluginItemViewholder.mJump.setOnClickListener(new View.OnClickListener() {
+           /* pluginItemViewholder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onItemClick(position);
                     }
                 }
-            });
+            });*/
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(position);
+                }
+            }
+        });
 
     }
 
